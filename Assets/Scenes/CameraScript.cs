@@ -47,22 +47,22 @@ class CameraScript : MonoBehaviour
         // Get input and move camera position
         if (Input.GetButton(forwardBtnName))
         {
-            transform.position = transform.position + transform.forward * moveSpeed;
+            transform.position = transform.position + transform.forward * moveSpeed * Time.deltaTime;
             lastDirection = Direction.forward;
         }                                                                                               
         if (Input.GetButton(backwardBtnName))                                                           
         {                                                                                               
-            transform.position = transform.position - transform.forward * moveSpeed;
+            transform.position = transform.position - transform.forward * moveSpeed * Time.deltaTime;
             lastDirection = Direction.backward;
         }                                                                                               
         if (Input.GetButton(leftBtnName))                                                               
         {                                                                                               
-            transform.position = transform.position - transform.right * moveSpeed;
+            transform.position = transform.position - transform.right * moveSpeed * Time.deltaTime;
             lastDirection = Direction.left;
         }                                                                                               
         if (Input.GetButton(rightBtnName))                                                              
         {                                                                                               
-            transform.position = transform.position + transform.right * moveSpeed;
+            transform.position = transform.position + transform.right * moveSpeed * Time.deltaTime;
             lastDirection = Direction.right;
         }
     }
