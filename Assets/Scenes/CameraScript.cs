@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+enum Direction
+{
+    none,
+    forward,
+    backward,
+    left,
+    right
+}
 
 class CameraScript : MonoBehaviour
 {
@@ -16,18 +24,16 @@ class CameraScript : MonoBehaviour
     public String leftBtnName { get; set; } = "Left";
     // Axis for moving right
     public String rightBtnName { get; set; } = "Right";
-    // Main camera object
-    public Camera camera;
     // BoxCollider object which stops camera from clipping into walls.
-    public BoxCollider collider;
 
     // Camera pitch & yaw
     private float pitch = 0.0f;
     private float yaw = 0.0f;
+    private Direction lastDirection;
+
     void Start()
     {
-        collider.transform.parent = camera.transform;
-        farClipPlaneDistance = camera.farClipPlane;
+        lastDirection = Direction.none;
         Cursor.lockState = CursorLockMode.Locked;
         Debug.Log("Camera starting...");
     }
@@ -36,23 +42,35 @@ class CameraScript : MonoBehaviour
     {
         yaw += Input.GetAxis("Mouse X");
         pitch -= Input.GetAxis("Mouse Y");
-        camera.transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+        transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+
         // Get input and move camera position
         if (Input.GetButton(forwardBtnName))
         {
-            camera.transform.position = camera.transform.position + camera.transform.forward * moveSpeed;
+            transform.position = transform.position + transform.forward * moveSpeed;
+            lastDirection = Direction.forward;
         }                                                                                               
         if (Input.GetButton(backwardBtnName))                                                           
         {                                                                                               
-            camera.transform.position = camera.transform.position - camera.transform.forward * moveSpeed;
+            transform.position = transform.position - transform.forward * moveSpeed;
+            lastDirection = Direction.backward;
         }                                                                                               
         if (Input.GetButton(leftBtnName))                                                               
         {                                                                                               
-            camera.transform.position = camera.transform.position - camera.transform.right * moveSpeed;
+            transform.position = transform.position - transform.right * moveSpeed;
+            lastDirection = Direction.left;
         }                                                                                               
         if (Input.GetButton(rightBtnName))                                                              
         {                                                                                               
-            camera.transform.position = camera.transform.position + camera.transform.right * moveSpeed;
+            transform.position = transform.position + transform.right * moveSpeed;
+            lastDirection = Direction.right;
         }
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log(collision);
+        Debug.Log("collision detected");
+    }
+    
 }
